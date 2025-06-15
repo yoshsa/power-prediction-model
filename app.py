@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import joblib
 import numpy as np
+import os  # For accessing environment variables
 
 app = Flask(__name__)
 
@@ -24,6 +25,8 @@ def predict():
     # Return the prediction as a JSON response
     return jsonify({'predicted_power': prediction[0]})
 
-# Run the app
+# Run the app, binding to the port provided by Render
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Get the port number from the environment variable, default to 5000 if not provided
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)  # Ensure it binds to the correct port
